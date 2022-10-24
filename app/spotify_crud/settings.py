@@ -5,7 +5,7 @@ import os
 
 @dataclass(frozen=True)
 class SpotifyConfigs:
-    ACCOUNT_ID = os.environ['ACCOUNT_ID'].astype(str)
+    ACCOUNT_ID = os.environ['ACCOUNT_ID']
     CLIENT_ID = os.environ['CLIENT_ID']
     CLIENT_SECRET = os.environ['CLIENT_SECRET']
     SCOPES = 'user-library-read user-library-modify'
