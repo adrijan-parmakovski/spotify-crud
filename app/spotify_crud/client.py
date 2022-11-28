@@ -61,15 +61,17 @@ class SpotifyClient():
                              )
             print('Running url: {}'.format(url))
             tracks.extend(r.json()['items'])
-            break
+
             if r.json().get('next') is not None:
                 url = r.json()['next']
             else:
                 break
         return tracks
 
-    def get_object(self, url):
+    def get_object(self, endpoint):
         self.connect()
+
+        url = f'{SpotifyConfigs.SPOTIFY_WEB_API_URL}/{SpotifyConfigs.SPOTIFY_WEB_API_VERSION}/{endpoint}'
 
         r = requests.get(url=url,
                          headers={
