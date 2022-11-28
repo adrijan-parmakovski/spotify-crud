@@ -14,3 +14,5 @@ class SpotifyConfigs:
     BASE64_SECRET = b64encode('{}:{}'.format(CLIENT_ID, CLIENT_SECRET).encode()).decode()
     # URLs
     API_TOKEN_URL = 'https://accounts.spotify.com/api/token'
+    SPOTIFY_WEB_API_URL = 'https://api.spotify.com'
+    SPOTIFY_WEB_API_VERSION = 'v1'
