@@ -1,0 +1,5 @@
+[tool.poetry]
+name = "Spotify"
+version = "0.1.0"
+description = "Repository reading and modifying Spotify data"
+
