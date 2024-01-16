@@ -1,6 +1,0 @@
-import os
-
-ACCOUNT_ID = os.environ["SPOTIFY__ACCOUNT_ID"]
-CLIENT_ID = os.environ["SPOTIFY__CLIENT_ID"]
-CLIENT_SECRET = os.environ["SPOTIFY__CLIENT_SECRET"]
-REFRESH_TOKEN = os.environ["SPOTIFY__REFRESH_TOKEN"]
