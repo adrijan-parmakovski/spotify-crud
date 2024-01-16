@@ -20,3 +20,6 @@ class SpotifyConfigs:
     api_token_url = "https://accounts.spotify.com/api/token"
     spotify_web_api_url = "https://api.spotify.com"
     spotify_web_api_version = "v1"
+
+
+SPOTIFY_CONFIGS = SpotifyConfigs()
