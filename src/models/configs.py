@@ -15,6 +15,6 @@ class SpotifyConfigs:
     spotify_web_api_version: str
 
     def __post_init__(self):
-        self.base_64_secret = b64encode(
+        self.base64_secret = b64encode(
             "{}:{}".format(self.client_id, self.client_secret).encode()
         ).decode()
