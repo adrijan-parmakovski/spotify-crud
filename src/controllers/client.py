@@ -4,35 +4,35 @@ import json
 
 from time import time
 
-from ..utils.configs import SpotifyConfigs
+from ..utils.configs import SPOTIFY_CONFIGS
 
 
 class SpotifyClient:
     def __init__(self) -> None:
-        self.refresh_token = SpotifyConfigs.REFRESH_TOKEN
-        self.account_id = SpotifyConfigs.ACCOUNT_ID
+        self.refresh_token = SPOTIFY_CONFIGS.refresh_token
+        self.account_id = SPOTIFY_CONFIGS.account_id
         self.access_token = None
 
     def _get_refresh_token(self, auth_code: str):
         headers = {
-            "Authorization": "Basic " + SpotifyConfigs.BASE64_SECRET,
+            "Authorization": "Basic " + SPOTIFY_CONFIGS.base64_secret,
             "Content-Type": "application/x-www-form-urlencoded",
         }
         data = {
             "grant_type": "authorization_code",
-            "code": SpotifyConfigs.AUTH_CODE,
-            "redirect_uri": SpotifyConfigs.REDIRECT_URI,
+            "code": SPOTIFY_CONFIGS.AUTH_CODE,
+            "redirect_uri": SPOTIFY_CONFIGS.redirect_uri,
         }
-        r = requests.post(SpotifyConfigs.API_TOKEN_URL, headers=headers, data=data)
+        r = requests.post(SPOTIFY_CONFIGS.API_TOKEN_URL, headers=headers, data=data)
         self.refresh_token = r.json()["refresh_token"]
 
     def _get_access_token(self):
         r = requests.post(
-            url=SpotifyConfigs.API_TOKEN_URL,
-            headers={"Authorization": "Basic {}".format(SpotifyConfigs.BASE64_SECRET)},
+            url=SPOTIFY_CONFIGS.api_token_url,
+            headers={"Authorization": "Basic {}".format(SPOTIFY_CONFIGS.base64_secret)},
             data={
                 "grant_type": "refresh_token",
-                "refresh_token": SpotifyConfigs.REFRESH_TOKEN,
+                "refresh_token": SPOTIFY_CONFIGS.refresh_token,
             },
         )
         if "error" in r.json().keys():
@@ -74,7 +74,7 @@ class SpotifyClient:
     def get_object(self, endpoint):
         self.connect()
 
-        url = f"{SpotifyConfigs.SPOTIFY_WEB_API_URL}/{SpotifyConfigs.SPOTIFY_WEB_API_VERSION}/{endpoint}"
+        url = f"{SPOTIFY_CONFIGS.spotify_web_api_url}/{SpotifyConfigs.spotify_web_api_version}/{endpoint}"
 
         r = requests.get(
             url=url,
