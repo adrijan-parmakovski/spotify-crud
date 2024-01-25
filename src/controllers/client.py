@@ -7,6 +7,11 @@ from time import time
 from ..utils.configs import SPOTIFY_CONFIGS
 
 
+class SpotifyApi:
+    def __init__(self) -> None:
+        pass
+
+
 class SpotifyClient:
     def __init__(self) -> None:
         self.refresh_token = SPOTIFY_CONFIGS.refresh_token
