@@ -3,15 +3,31 @@ import requests
 import json
 
 from time import time
+from base64 import b64encode
 
 from ..utils.configs import SPOTIFY_CONFIGS
 
 
 class SpotifyApiRequests:
-    def __init__(self) -> None:
-        pass
+    def __init__(
+        self,
+        headers: dict = {
+            "Content-Type": "application-json",
+            "Authorization": "Bearer {}".format(
+                b64encode(
+                    "{}:{}".format(
+                        SPOTIFY_CONFIGS.client_id, SPOTIFY_CONFIGS.client_secret
+                    ).encode()
+                ).decode()
+            ),
+        },
+    ) -> None:
+        self.headers = headers
 
-    def get_access_token(self, method="POST", url)
+    def get_access_token(
+        self, method="POST", url=SPOTIFY_CONFIGS.api_token_url
+    ) -> dict:
+        return {"method": method, "url": url, "headers": self.headers}
 
 
 class SpotifyClient:
