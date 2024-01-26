@@ -7,9 +7,11 @@ from time import time
 from ..utils.configs import SPOTIFY_CONFIGS
 
 
-class SpotifyApi:
+class SpotifyApiRequests:
     def __init__(self) -> None:
         pass
+
+    def get_access_token(self, method="POST", url)
 
 
 class SpotifyClient:
