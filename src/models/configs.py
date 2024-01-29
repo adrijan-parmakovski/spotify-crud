@@ -10,7 +10,8 @@ class SpotifyConfigs:
     refresh_token: str
     scopes: str
     redirect_uri: str
-    api_token_url: str
+    api_token_base_url: str
+    api_token_endpoint: str
     spotify_web_api_url: str
     spotify_web_api_version: str
 
