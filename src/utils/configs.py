@@ -14,7 +14,8 @@ SPOTIFY_CONFIGS = SpotifyConfigs(
     scopes="user-library-read user-library-modify",
     redirect_uri="http://google.com",
     # URLs
-    api_token_url="https://accounts.spotify.com/api/token",
+    api_token_base_url="https://accounts.spotify.com",
+    api_token_endpoint="api/token",
     spotify_web_api_url="https://api.spotify.com",
     spotify_web_api_version="v1",
 )
