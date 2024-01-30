@@ -33,9 +33,9 @@ async def foo():
     session = ClientSession()
     c = AsyncRequestHandler(session)
     client = SpotifyClient(api_requests=API, request_processor=c)
-    json_data = await client.get_sample_tracks()
-    with open("sample_track.json", "w") as f:
-        json.dump(json_data[0], f, indent=4)
+    json_data = await client.get_artist(artist_id="3q7HBObVc0L8jNeTe5Gofh")
+    with open("sample_artist.json", "w") as f:
+        json.dump(json_data, f, indent=4)
     await session.close()
 
 

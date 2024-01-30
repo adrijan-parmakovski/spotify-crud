@@ -81,6 +81,14 @@ class SpotifyApiRequests:
             headers=headers,
         )
 
+    def get_artist(self, headers: Dict[str, str], artist_id: str) -> dict:
+        return self._create_request(
+            method="GET",
+            url=SPOTIFY_CONFIGS.spotify_web_api_url,
+            endpoint="artists/{}".format(artist_id),
+            headers=headers,
+        )
+
 
 class SpotifyClient:
     def __init__(
@@ -152,6 +160,13 @@ class SpotifyClient:
             request
         )
         return json_data["items"]
+
+    async def get_artist(self, artist_id: str):
+        request = self._api.get_artist(headers=self.headers, artist_id=artist_id)
+        json_data, headers, status_code = await self._request_processor.send_request(
+            request
+        )
+        return json_data
 
     def connect(self):
         if not self.access_token or self.expires_at - int(time()) < 300:
