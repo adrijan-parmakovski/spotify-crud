@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from .common import Image
-from .artist import SpotifyArtist
+from .artist import Artist
 
 
 @dataclass

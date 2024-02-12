@@ -1,11 +1,11 @@
 from ._base import Serializer
-from ..models.artist import Image, SpotifyArtist, ArtistFollowers, ExternalUrls
+from ..models.artist import Image, Artist, ArtistFollowers, ExternalUrls, SimplifiedArtist
 
 
-class SpotifyArtistSerializer:
+class ArtistSerializer(Serializer):
     @staticmethod
-    def deserialize(input: dict) -> SpotifyArtist:
-        return SpotifyArtist(
+    def deserialize(input: dict) -> Artist:
+        return Artist(
             external_urls=_ExternalUrlsSerializer.deserialize(input["external_urls"])
             if input.get("external_urls")
             else None,
@@ -25,7 +25,7 @@ class SpotifyArtistSerializer:
         )
 
     @staticmethod
-    def serialize(input: SpotifyArtist) -> dict:
+    def serialize(input: Artist) -> dict:
         return {
             "external_urls": _ExternalUrlsSerializer.serialize(input.external_urls),
             "followers": _ArtistFollowersSerializer.serialize(input.followers)
@@ -40,6 +40,16 @@ class SpotifyArtistSerializer:
             "type": input.type,
             "uri": input.uri,
         }
+
+
+class SimplifiedArtistSerializer(Serializer):
+    @staticmethod
+    def deserialize(input: dict) -> SimplifiedArtist:
+        pass
+
+    @staticmethod
+    def serialize(input: SimplifiedArtist) -> dict:
+        pass
 
 
 class _ArtistFollowersSerializer(Serializer):

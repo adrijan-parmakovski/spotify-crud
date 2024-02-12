@@ -16,7 +16,7 @@ class ArtistFollowers:
 
 
 @dataclass
-class SpotifyArtist:
+class Artist:
     external_urls: ExternalUrls
     followers: ArtistFollowers | None
     genres: List[str]
@@ -27,3 +27,8 @@ class SpotifyArtist:
     popularity: float | None
     type: str
     uri: str
+
+
+@dataclass
+class SimplifiedArtist:
+    pass
