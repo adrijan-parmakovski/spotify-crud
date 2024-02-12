@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List, Dict
 
+from .common import Image
+
 
 @dataclass
 class ExternalUrls:
@@ -11,13 +13,6 @@ class ExternalUrls:
 class ArtistFollowers:
     href: str
     total: int
-
-
-@dataclass
-class Image:
-    height: int
-    url: str
-    width: int
 
 
 @dataclass
