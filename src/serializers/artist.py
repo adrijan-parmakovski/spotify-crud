@@ -1,5 +1,6 @@
 from ._base import Serializer
 from ..models.artist import Image, Artist, Followers, ExternalUrl, SimplifiedArtist
+from .common import _ImageSerializer, _ExternalUrlSerializer
 
 
 class ArtistSerializer(Serializer):
@@ -60,16 +61,6 @@ class _ArtistFollowerSerializer(Serializer):
     @staticmethod
     def serialize(input: Followers) -> dict:
         return {"href": input.href, "total": input.total}
-
-
-class _ExternalUrlSerializer(Serializer):
-    @staticmethod
-    def deserialize(input: dict) -> ExternalUrl:
-        return ExternalUrl(spotify=input["spotify"])
-
-    @staticmethod
-    def serialize(input: ExternalUrl) -> dict:
-        return {"spotify": input.spotify}
 
 
 class _ImageSerializer(Serializer):

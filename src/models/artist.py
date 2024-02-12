@@ -1,12 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Dict
 
-from .common import Image
-
-
-@dataclass
-class ExternalUrl:
-    spotify: str
+from .common import Image, ExternalUrl
 
 
 @dataclass
