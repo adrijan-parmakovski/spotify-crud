@@ -3,7 +3,7 @@ import json
 
 from src.controllers.client import SpotifyClient, SpotifyApiRequests
 from src.controllers.request_processor import AsyncRequestHandler
-from src.serializers.artist import ArtistSerializer
+from src.serializers.artist import ArtistSerializer, SimplifiedArtistSerializer
 from aiohttp import ClientSession
 
 from asyncio import run
@@ -50,6 +50,10 @@ def serializer_test():
     with open("sample_track.json", "r") as f:
         _raw_data = json.loads(f.read())
     artist = ArtistSerializer.deserialize(_raw_data["track"]["artists"][0])
+    simplified_artist = SimplifiedArtistSerializer.deserialize(
+        _raw_data["track"]["artists"][0]
+    )
+    print(simplified_artist)
     print(artist)
 
 

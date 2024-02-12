@@ -46,11 +46,25 @@ class ArtistSerializer(Serializer):
 class SimplifiedArtistSerializer(Serializer):
     @staticmethod
     def deserialize(input: dict) -> SimplifiedArtist:
-        pass
+        return SimplifiedArtist(
+            external_urls=_ExternalUrlSerializer.deserialize(input["external_urls"]),
+            href=input["href"],
+            id=input["id"],
+            name=input["name"],
+            type=input["type"],
+            uri=input["uri"],
+        )
 
     @staticmethod
     def serialize(input: SimplifiedArtist) -> dict:
-        pass
+        return {
+            "external_urls": _ExternalUrlSerializer.serialize(input.external_urls),
+            "href": input.href,
+            "id": input.id,
+            "name": input.name,
+            "type": input.type,
+            "uri": input.uri,
+        }
 
 
 class _ArtistFollowerSerializer(Serializer):
