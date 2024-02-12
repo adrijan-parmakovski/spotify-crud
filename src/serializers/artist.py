@@ -1,5 +1,6 @@
 from ._base import Serializer
-from ..models.artist import Image, Artist, Followers, ExternalUrl, SimplifiedArtist
+from ..models.artist import Image, Artist, Followers
+from ..models.simplified_artist import SimplifiedArtist
 from .common import _ImageSerializer, _ExternalUrlSerializer
 
 

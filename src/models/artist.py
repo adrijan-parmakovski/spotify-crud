@@ -22,13 +22,3 @@ class Artist:
     popularity: float | None
     type: str
     uri: str
-
-
-@dataclass
-class SimplifiedArtist:
-    external_urls: ExternalUrl
-    href: str
-    id: str
-    name: str
-    type: str
-    uri: str
