@@ -169,7 +169,7 @@ class SpotifyClient:
         return json_data
 
     def connect(self):
-        if not self.access_token or self.expires_at - int(time()) < 300:
+        if not self._access_token or self._access_token_expires_at - int(time()) < 300:
             self._get_access_token()
         pass
 
@@ -183,7 +183,7 @@ class SpotifyClient:
             r = requests.get(
                 url=url,
                 headers={
-                    "Authorization": "Bearer {}".format(self.access_token),
+                    "Authorization": "Bearer {}".format(self._access_token),
                     "Content-Type": "application-json",
                 },
                 params={"limit": 50},
