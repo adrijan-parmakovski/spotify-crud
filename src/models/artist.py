@@ -5,20 +5,20 @@ from .common import Image
 
 
 @dataclass
-class ExternalUrls:
+class ExternalUrl:
     spotify: str
 
 
 @dataclass
-class ArtistFollowers:
+class Followers:
     href: str
     total: int
 
 
 @dataclass
 class Artist:
-    external_urls: ExternalUrls
-    followers: ArtistFollowers | None
+    external_urls: ExternalUrl
+    followers: Followers | None
     genres: List[str]
     href: str
     id: str
@@ -31,4 +31,9 @@ class Artist:
 
 @dataclass
 class SimplifiedArtist:
-    pass
+    external_urls: ExternalUrl
+    href: str
+    id: str
+    name: str
+    type: str
+    uri: str

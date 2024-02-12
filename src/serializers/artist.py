@@ -1,15 +1,15 @@
 from ._base import Serializer
-from ..models.artist import Image, Artist, ArtistFollowers, ExternalUrls, SimplifiedArtist
+from ..models.artist import Image, Artist, Followers, ExternalUrl, SimplifiedArtist
 
 
 class ArtistSerializer(Serializer):
     @staticmethod
     def deserialize(input: dict) -> Artist:
         return Artist(
-            external_urls=_ExternalUrlsSerializer.deserialize(input["external_urls"])
+            external_urls=_ExternalUrlSerializer.deserialize(input["external_urls"])
             if input.get("external_urls")
             else None,
-            followers=_ArtistFollowersSerializer.deserialize(input["followers"])
+            followers=_ArtistFollowerSerializer.deserialize(input["followers"])
             if input.get("followers")
             else None,
             genres=input.get("genres", []),
@@ -27,8 +27,8 @@ class ArtistSerializer(Serializer):
     @staticmethod
     def serialize(input: Artist) -> dict:
         return {
-            "external_urls": _ExternalUrlsSerializer.serialize(input.external_urls),
-            "followers": _ArtistFollowersSerializer.serialize(input.followers)
+            "external_urls": _ExternalUrlSerializer.serialize(input.external_urls),
+            "followers": _ArtistFollowerSerializer.serialize(input.followers)
             if input.followers
             else None,
             "genres": input.genres,
@@ -52,23 +52,23 @@ class SimplifiedArtistSerializer(Serializer):
         pass
 
 
-class _ArtistFollowersSerializer(Serializer):
+class _ArtistFollowerSerializer(Serializer):
     @staticmethod
-    def deserialize(input: dict) -> ArtistFollowers:
-        return ArtistFollowers(href=input["href"], total=input["total"])
+    def deserialize(input: dict) -> Followers:
+        return Followers(href=input["href"], total=input["total"])
 
     @staticmethod
-    def serialize(input: ArtistFollowers) -> dict:
+    def serialize(input: Followers) -> dict:
         return {"href": input.href, "total": input.total}
 
 
-class _ExternalUrlsSerializer(Serializer):
+class _ExternalUrlSerializer(Serializer):
     @staticmethod
-    def deserialize(input: dict) -> ExternalUrls:
-        return ExternalUrls(spotify=input["spotify"])
+    def deserialize(input: dict) -> ExternalUrl:
+        return ExternalUrl(spotify=input["spotify"])
 
     @staticmethod
-    def serialize(input: ExternalUrls) -> dict:
+    def serialize(input: ExternalUrl) -> dict:
         return {"spotify": input.spotify}
 
 
