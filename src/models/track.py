@@ -1,26 +1,32 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from typing import List, Dict
+from typing import List
 
-
-@dataclass
-class SpotifyTrack:
-    pass
-
-
-@dataclass
-class ExternalUrls:
-    spotify: str
+from .common import ExternalIds, ExternalUrl, Restriction
+from .artist import Artist
+from .simplified_album import SimplifiedAlbum
+from .linked_track import LinkedTrack
 
 
 @dataclass
-class Image:
-    height: int
-    url: str
-    width: int
-
-
-@dataclass
-class ArtistFollowers:
+class Track:
+    album: SimplifiedAlbum
+    artists: List[Artist]
+    available_markets: List[str] | None
+    disc_number: int
+    duration_ms: int
+    explicit: bool
+    external_ids: ExternalIds
+    external_urls: ExternalUrl
     href: str
-    total: int
+    id: str
+    is_local: bool
+    is_playable: bool | None
+    linked_from: LinkedTrack
+    name: str
+    popularity: float
+    preview_url: str
+    restrictions: List[Restriction]
+    track_number: int
+    type: str
+    uri: str
