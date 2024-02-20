@@ -9,5 +9,10 @@ class Image:
 
 
 @dataclass
+class Restriction:
+    reason: str
+
+
+@dataclass
 class ExternalUrl:
     spotify: str

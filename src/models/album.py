@@ -9,6 +9,19 @@ from typing import List
 
 
 @dataclass
+class Copyright:
+    text: str
+    type: str
+
+
+@dataclass
+class ExternalIds:
+    isrc: str
+    ean: str
+    upc: str
+
+
+@dataclass
 class Album:
     album_type: str
     artists: List[Artist]
@@ -29,21 +42,3 @@ class Album:
     tracks: List[SimplifiedTrack]
     type: str
     uri: str
-
-
-@dataclass
-class Restriction:
-    reason: str
-
-
-@dataclass
-class Copyright:
-    text: str
-    type: str
-
-
-@dataclass
-class ExternalIds:
-    isrc: str
-    ean: str
-    upc: str

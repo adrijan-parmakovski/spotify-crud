@@ -1,3 +1,4 @@
+from ..models.common import Restriction
 from ._base import Serializer
 
 from src.models.common import Image, ExternalUrl
@@ -21,3 +22,13 @@ class _ExternalUrlSerializer(Serializer):
     @staticmethod
     def serialize(input: ExternalUrl) -> dict:
         return {"spotify": input.spotify}
+
+
+class _RestrictionSerializer(Serializer):
+    @staticmethod
+    def deserialize(input: dict) -> Restriction:
+        return Restriction(reason=input["reason"])
+
+    @staticmethod
+    def serialize(input: Restriction) -> dict:
+        return {"reason": input.reason}

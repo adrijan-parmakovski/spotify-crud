@@ -13,12 +13,12 @@ class Followers:
 @dataclass
 class Artist:
     external_urls: ExternalUrl
-    followers: Followers | None
+    followers: Followers
     genres: List[str]
     href: str
     id: str
     images: List[Image]
     name: str
-    popularity: float | None
+    popularity: float
     type: str
     uri: str
