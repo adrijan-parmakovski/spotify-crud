@@ -14,5 +14,12 @@ class Restriction:
 
 
 @dataclass
+class ExternalIds:
+    isrc: str
+    ean: str
+    upc: str
+
+
+@dataclass
 class ExternalUrl:
     spotify: str

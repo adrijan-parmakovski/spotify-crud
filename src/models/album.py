@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-from ..models.common import ExternalUrl
-from .common import Image
+from .common import ExternalUrl, Restriction, ExternalIds
 from .artist import Artist
 from .simplified_track import SimplifiedTrack
 
@@ -12,13 +11,6 @@ from typing import List
 class Copyright:
     text: str
     type: str
-
-
-@dataclass
-class ExternalIds:
-    isrc: str
-    ean: str
-    upc: str
 
 
 @dataclass
