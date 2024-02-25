@@ -2,11 +2,16 @@ from ._base import Serializer
 
 from ..models.album import Album, Copyright
 from ..models.simplified_album import SimplifiedAlbum
-from .artist import SimplifiedArtistSerializer
-from .common import _ImageSerializer, _RestrictionSerializer
+from .artist import ArtistSerializer, SimplifiedArtistSerializer
+from .common import (
+    _ImageSerializer,
+    _RestrictionSerializer,
+    _ExternalIdsSerializer,
+    _ExternalUrlSerializer,
+)
 
 
-class _Copyright(Serializer):
+class _CopyrightSerializer(Serializer):
     @staticmethod
     def deserialize(input: dict) -> Copyright:
         return Copyright(text=input["text"], type=input["type"])
@@ -72,7 +77,34 @@ class SimplifiedAlbumSerializer(Serializer):
 class AlbumSerializer(Serializer):
     @staticmethod
     def deserialize(input: dict) -> Album:
-        pass
+        return Album(
+            album_type=input["album_type"],
+            artists=[
+                ArtistSerializer.deserialize(artist) for artist in input["artists"]
+            ],
+            available_markets=input["available_markets"],
+            copyrights=[
+                _CopyrightSerializer.deserialize(copyright)
+                for copyright in input["copyrights"]
+            ],
+            external_ids=_ExternalIdsSerializer.deserialize(input["external_ids"]),
+            external_urls=_ExternaUrlSerializer.deserialize(input["external_urls"]),
+            genres=input["genres"],
+            href=input["href"],
+            id=input["id"],
+            images=[_ImageSerializer.deserialize(image) for image in input["images"]],
+            label=input["label"],
+            name=input["name"],
+            popularity=input.get("popularity"),
+            release_date=input["release_date"],
+            restrictions=[
+                _RestrictionSerializer.deserialize(res) for res in input["restrictions"]
+            ],
+            total_tracks=input["total_tracks"],
+            tracks=[_SimplifiedTrackSerializer(track) for track in input["tracks"]],
+            type=input["type"],
+            uri=input["uri"],
+        )
 
     @staticmethod
     def serialize(input: Album) -> dict:

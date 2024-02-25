@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .common import ExternalUrl, Restriction, ExternalIds
+from .common import ExternalUrl, Image, Restriction, ExternalIds
 from .artist import Artist
 from .simplified_track import SimplifiedTrack
 
@@ -24,7 +24,7 @@ class Album:
     genres: List[str]
     href: str
     id: str
-    images: List[str]
+    images: List[Image]
     label: str
     name: str
     popularity: float | None
