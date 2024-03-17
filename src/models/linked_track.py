@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.common import ExternalUrl
+from .common import ExternalUrl
 
 
 @dataclass

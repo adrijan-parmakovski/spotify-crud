@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import List
-from models.common import ExternalUrl, Restriction
-from models.linked_track import LinkedTrack
+from .common import ExternalUrl, Restriction
+from .linked_track import LinkedTrack
 
-from models.simplified_artist import SimplifiedArtist
+from .simplified_artist import SimplifiedArtist
 
 
 @dataclass
