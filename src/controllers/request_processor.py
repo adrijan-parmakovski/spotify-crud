@@ -1,11 +1,7 @@
-from abc import ABC, abstractmethod
-from asyncio import Event, Queue, Semaphore, create_task, gather, sleep
-from asyncio.exceptions import CancelledError
+from asyncio import Semaphore
 from typing import Tuple
-from uuid import UUID, uuid4
 
 import aiohttp
-import requests
 
 
 class AsyncRequestHandler:
@@ -20,3 +16,24 @@ class AsyncRequestHandler:
                 print(type(exc), exc)
                 resp = await response.read()
             return (resp, response.headers, response.status)
+
+
+class AsyncProcessor:
+    _MAX_CONCURRENT_REQUESTS = 30
+
+    def __init__(self) -> None:
+        self._session = None
+        self._request_handler = None
+        self._semaphore = None
+
+    async def __aenter__(self):
+        self._session = aiohttp.ClientSession()
+        self._request_handler = AsyncRequestHandler(self._session)
+        self._semaphore = Semaphore(self._MAX_CONCURRENT_REQUESTS)
+
+    async def __aexit__(self, *args):
+        return self._session.close()
+
+    async def submit_request(self, request: dict) -> Tuple[dict | str, dict, int]:
+        async with self._semaphore:
+            return await self._request_handler.submit_request(request)

@@ -1,14 +1,13 @@
 from importlib.metadata import requires
 import requests
-import json
 from typing import Dict
-from asyncio import run
 from time import time
 from datetime import datetime, timedelta
 from base64 import b64encode
 
-from .request_processor import AsyncRequestHandler
-
+from .request_processor import AsyncProcessor
+from ..models.track import Track
+from ..serializers.track import TrackSerializer
 from ..utils.configs import SPOTIFY_CONFIGS
 
 API_VERSION = SPOTIFY_CONFIGS.spotify_web_api_version
@@ -73,6 +72,14 @@ class SpotifyApiRequests:
             },
         )
 
+    def get_page(self, header: Dict[str, str], limit: int, offset: int) -> dict:
+        return self._create_request(
+            method="GET",
+            headers=headers,
+            endpoint="tracks",
+            params={"limit": limit, "offset": offset},
+        )
+
     def get_sample_tracks(self, headers: Dict[str, str]) -> dict:
         return self._create_request(
             method="GET",
@@ -92,7 +99,7 @@ class SpotifyApiRequests:
 
 class SpotifyClient:
     def __init__(
-        self, api_requests: SpotifyApiRequests, request_processor: AsyncRequestHandler
+        self, api_requests: SpotifyApiRequests, request_processor: AsyncProcessor
     ) -> None:
         self._api = api_requests
         self._request_processor = request_processor
@@ -156,22 +163,32 @@ class SpotifyClient:
 
     async def get_sample_tracks(self):
         request = self._api.get_sample_tracks(self.headers)
-        json_data, headers, status_code = await self._request_processor.send_request(
+        json_data, headers, status_code = await self._request_processor.submit_request(
             request
         )
         return json_data["items"]
 
     async def get_artist(self, artist_id: str):
         request = self._api.get_artist(headers=self.headers, artist_id=artist_id)
-        json_data, headers, status_code = await self._request_processor.send_request(
+        json_data, headers, status_code = await self._request_processor.submit_request(
             request
         )
-        return json_data
+        return json_
 
     def connect(self):
         if not self._access_token or self._access_token_expires_at - int(time()) < 300:
             self._get_access_token()
         pass
+
+    async def _get_saved_tracks_page(
+        self, limit: int, offset: int, return_totals: bool
+    ) -> List[Track]:
+        # generate the requests
+        request = self._api.get_page(header=self.headers, limit=limit, offset=offset)
+        json_data, headers, status_code = self._request_processor.submit_request(
+            request
+        )
+        return json_data, headers, status_code
 
     def get_saved_tracks(self):
         self.connect()
