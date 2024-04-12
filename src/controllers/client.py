@@ -1,9 +1,10 @@
-from importlib.metadata import requires
 import requests
-from typing import Dict
+from typing import Dict, List, Tuple, Any
 from time import time
 from datetime import datetime, timedelta
 from base64 import b64encode
+
+from requests.api import request
 
 from .request_processor import AsyncProcessor
 from ..models.track import Track
@@ -34,8 +35,8 @@ class SpotifyApiRequests:
         endpoint: str,
         headers: Dict[str, str],
         url: str = SPOTIFY_CONFIGS.spotify_web_api_url,
-        params: Dict[str, str] | None = None,
-        data: Dict[str, str] | None = None,
+        params: Dict[Any, Any] | None = None,
+        data: Dict[Any, Any] | None = None,
         add_api_version: bool = True,
     ) -> Dict[str, str | Dict[str, str]]:
         # generate the URL based on the base URL, endpoint and version
@@ -72,11 +73,13 @@ class SpotifyApiRequests:
             },
         )
 
-    def get_page(self, header: Dict[str, str], limit: int, offset: int) -> dict:
+    def get_page(
+        self, endpoint: str, headers: Dict[str, str], limit: int, offset: int
+    ) -> dict:
         return self._create_request(
             method="GET",
             headers=headers,
-            endpoint="tracks",
+            endpoint=endpoint,
             params={"limit": limit, "offset": offset},
         )
 
@@ -161,6 +164,51 @@ class SpotifyClient:
         # self.access_token = r.json()["access_token"]
         # self.expires_at = int(time()) + 3550
 
+    async def _get_page(
+        self, request: dict, return_total: bool = False
+    ) -> Tuple[list[dict], int] | list[dict]:
+        # get the request
+        json_data, headers, status_code = await self._request_processor.submit_request(
+            request
+        )
+        if return_total:
+            return json_data, json_data["total"]
+        return json_data, None
+
+    async def get_saved_tracks(self, endpoint="me/tracks"):
+        headers = self.headers
+        # check the total number of saved tracks
+        _total_request = self._api.get_page(
+            endpoint=endpoint, headers=headers, limit=1, offset=0
+        )
+        # get the total number
+        _sample, total_tracks = await self._get_page(
+            request=_total_request, return_total=True
+        )
+        print(_sample)
+
+
+def _generate_saved_tracks_requests(
+    url: str, headers: dict, total_tracks: int
+) -> list[dict]:
+    # empty list for generating all the requests
+    requests = []
+    # generate requests for all tracks
+    offset = 0
+    # iterate until we reach the end of the tracks
+    while offset < total_tracks:
+        request = {
+            "method": "GET",
+            "url": url,
+            "headers": headers,
+            "params": {"limit": 50, "offset": offset},
+        }
+        requests.append(request)
+        offset += 50
+    with open("requests.json", "w") as f:
+        json.dump(requests, f, indent=4)
+    return requests
+
     async def get_sample_tracks(self):
         request = self._api.get_sample_tracks(self.headers)
         json_data, headers, status_code = await self._request_processor.submit_request(
@@ -190,7 +238,7 @@ class SpotifyClient:
         )
         return json_data, headers, status_code
 
-    def get_saved_tracks(self):
+    def _get_saved_tracks_old(self):
         self.connect()
 
         tracks = []

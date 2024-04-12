@@ -1,3 +1,4 @@
 from get_tracks.main import get_saved_tracks
+from asyncio import run
 
-get_saved_tracks()
+run(get_saved_tracks())

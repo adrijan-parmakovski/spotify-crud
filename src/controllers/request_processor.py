@@ -1,5 +1,5 @@
-from asyncio import Semaphore
-from typing import Tuple
+import asyncio
+from typing import Tuple, List
 
 import aiohttp
 
@@ -8,7 +8,7 @@ class AsyncRequestHandler:
     def __init__(self, session: aiohttp.ClientSession):
         self.session = session
 
-    async def send_request(self, request: dict):
+    async def submit_request(self, request: dict):
         async with self.session.request(**request) as response:
             try:
                 resp = await response.json()
@@ -29,11 +29,23 @@ class AsyncProcessor:
     async def __aenter__(self):
         self._session = aiohttp.ClientSession()
         self._request_handler = AsyncRequestHandler(self._session)
-        self._semaphore = Semaphore(self._MAX_CONCURRENT_REQUESTS)
+        self._semaphore = asyncio.Semaphore(self._MAX_CONCURRENT_REQUESTS)
+        return self
 
     async def __aexit__(self, *args):
-        return self._session.close()
+        await self._session.close()
 
     async def submit_request(self, request: dict) -> Tuple[dict | str, dict, int]:
         async with self._semaphore:
             return await self._request_handler.submit_request(request)
+
+    async def submit_many_requests(
+        self, requests: dict
+    ) -> List[Tuple[dict | str, dict, int]]:
+        # generate the tasks
+        tasks = []
+        async with self._semaphore:
+            for request in requests:
+                tasks.append(self.submit_request(request))
+            results = await asyncio.gather(*tasks)
+        return results
